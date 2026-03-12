@@ -1,39 +1,18 @@
-export interface ApiResponse<T = null, E = null> {
+export interface ApiResponseInterface<T = null, E = null> {
   status: number;
   message: string;
   data?: T;
   error?: E;
 }
 
-export class ApiResponseBuilder<T = null, E = null> {
-  private response: ApiResponse<T, E> = {
-    status: 200,
-    message: "",
-  };
+export class ApiResponse<T = null, E = null> {
+  private response: ApiResponseInterface<T, E>;
 
-  constructor() {}
-
-  setStatus(status: number) {
-    this.response.status = status;
-    return this;
+  constructor(response: ApiResponseInterface<T, E>) {
+    this.response = response;
   }
 
-  setMessage(message: string) {
-    this.response.message = message;
-    return this;
-  }
-
-  setData(data: T) {
-    this.response.data = data;
-    return this;
-  }
-
-  setError(error: E) {
-    this.response.error = error;
-    return this;
-  }
-
-  build() {
+  getResponse() {
     return this.response;
   }
 }

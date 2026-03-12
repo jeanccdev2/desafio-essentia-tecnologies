@@ -9,15 +9,15 @@ class AuthController {
   async register(req: Request<object, object, RegisterDTO>, res: Response) {
     const { name, email, password } = req.body;
 
-    this.authService.register(name, email, password);
+    await this.authService.register(name, email, password);
     res.json({ name, email });
   }
 
   async login(req: Request<object, object, LoginDTO>, res: Response) {
     const { email, password } = req.body;
 
-    this.authService.login(email, password);
-    res.json({ email });
+    const response = await this.authService.login(email, password);
+    res.json(response);
   }
 
   async me(req: Request, res: Response) {

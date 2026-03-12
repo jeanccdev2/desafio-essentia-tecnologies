@@ -11,3 +11,5 @@ export type User = {
 
   tasks?: Task[];
 };
+
+export type UserResponse = Omit<User, "password">;

@@ -22,8 +22,9 @@ export class LoginResponseDTO {
       id: user.getDataValue("id"),
       name: user.getDataValue("name"),
       email: user.getDataValue("email"),
-      created_at: user.getDataValue("created_at"),
-      updated_at: user.getDataValue("updated_at"),
+      createdAt: user.getDataValue("createdAt"),
+      updatedAt: user.getDataValue("updatedAt"),
+      deletedAt: user.getDataValue("deletedAt") || null,
     });
   }
 }

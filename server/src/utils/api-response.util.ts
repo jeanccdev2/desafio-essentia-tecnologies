@@ -1,14 +1,14 @@
-export interface ApiResponseInterface<T = null, E = null> {
+export interface ApiResponseInterface<T = undefined> {
   status: number;
   message: string;
   data?: T;
-  error?: E;
+  error?: string | null | undefined;
 }
 
-export class ApiResponse<T = null, E = null> {
-  private response: ApiResponseInterface<T, E>;
+export class ApiResponse<T = null> {
+  private response: ApiResponseInterface<T>;
 
-  constructor(response: ApiResponseInterface<T, E>) {
+  constructor(response: ApiResponseInterface<T>) {
     this.response = response;
   }
 

@@ -10,23 +10,22 @@ export function errorHandlerMiddleware(
   next: NextFunction,
 ) {
   if (err instanceof HttpException) {
+    console.log(err);
     const response = new ApiResponse({
       status: err.status,
       message: err.message,
-      data: null,
-      error: err.error,
+      error: err.error?.message,
     });
     return res.status(err.status).json(response.getResponse());
   }
 
   const status = 500;
-  const message = err instanceof Error ? err.message : "Ocorreu um erro inesperado";
+  const message = "Ocorreu um erro inesperado";
 
   const response = new ApiResponse({
     status,
     message,
-    data: null,
-    error: err,
+    error: err instanceof Error ? err.message : null,
   });
 
   res.status(status).json(response.getResponse());

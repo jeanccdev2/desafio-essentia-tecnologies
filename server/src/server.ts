@@ -4,6 +4,7 @@ import sequelize from "./database/database.js";
 import authRouter from "./routes/auth.routes.js";
 import { apiResponseWrapperMiddleware } from "./middlewares/api-response-wrapper.middleware.js";
 import { errorHandlerMiddleware } from "./middlewares/error-handler.middleware.js";
+import taskRouter from "./routes/task.routes.js";
 
 const app = express();
 const port = ENV.PORT;
@@ -27,6 +28,7 @@ function setupMiddlewares() {
 
 function setupRoutes() {
   app.use("/api/v1/auth", authRouter);
+  app.use("/api/v1/tasks", taskRouter);
 }
 
 main();

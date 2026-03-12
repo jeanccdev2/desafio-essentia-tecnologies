@@ -1,13 +1,20 @@
 import type { NextFunction, Request, Response } from "express";
 import { ApiResponse } from "../utils/api-response.util.js";
 import type { ApiResponseInterface } from "../utils/api-response.util.js";
+import { PaginatedResponseDTO } from "../dtos/pagination.dto.js";
 
 export function apiResponseWrapperMiddleware(_req: Request, res: Response, next: NextFunction) {
   function apiResponse<T>(status: number, message: string, data?: T) {
     const payload: ApiResponseInterface<T> = { status, message };
 
     if (data !== undefined) {
-      payload.data = data;
+      if (data instanceof PaginatedResponseDTO) {
+        payload.data = data.data as T;
+        res.setHeader("x-total-items", data.pagination.totalItems.toString());
+        res.setHeader("x-total-pages", data.pagination.totalPages.toString());
+      } else {
+        payload.data = data;
+      }
     }
 
     const response = new ApiResponse<T>(payload);

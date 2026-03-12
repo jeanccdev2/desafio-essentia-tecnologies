@@ -3,7 +3,7 @@ import sequelize from "../database.js";
 import type { User } from "../../types/user.type.js";
 
 type UserInputtableTypes = Optional<User, "id" | "created_at" | "updated_at" | "deleted_at">;
-type UserSequelizeModelCreator = ModelDefined<User, UserInputtableTypes>;
+export type UserSequelizeModelCreator = ModelDefined<User, UserInputtableTypes>;
 
 const UserModel: UserSequelizeModelCreator = sequelize.define(
   "users",

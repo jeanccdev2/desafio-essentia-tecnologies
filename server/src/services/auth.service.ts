@@ -3,6 +3,7 @@ import argon2 from "argon2";
 import { UsersService } from "./users.service.js";
 import { NotFoundException } from "../exceptions/not-found.exception.js";
 import { ConflictException } from "../exceptions/conflict.exception.js";
+import { JwtUtil } from "../utils/jwt.util.js";
 
 export class AuthService {
   private usersService: UsersService;
@@ -20,7 +21,8 @@ export class AuthService {
 
     const user = await this.usersService.createUser(name, email, password);
 
-    const userResponse: LoginResponseDTO = LoginResponseDTO.fromModel("token", user);
+    const token = this.generateToken(user.getDataValue("id"));
+    const userResponse: LoginResponseDTO = LoginResponseDTO.fromModel(token, user);
 
     return userResponse;
   }
@@ -37,8 +39,15 @@ export class AuthService {
       throw new NotFoundException("Senha inválida");
     }
 
-    const userResponse: LoginResponseDTO = LoginResponseDTO.fromModel("token", user);
+    const token = this.generateToken(user.getDataValue("id"));
+    const userResponse: LoginResponseDTO = LoginResponseDTO.fromModel(token, user);
 
     return userResponse;
+  }
+
+  private generateToken(userId: string) {
+    return JwtUtil.sign({
+      sub: userId,
+    });
   }
 }

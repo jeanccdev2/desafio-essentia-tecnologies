@@ -2,6 +2,7 @@ import express from "express";
 import { ENV } from "./config/env.js";
 import sequelize from "./database/database.js";
 import authRouter from "./routes/auth.routes.js";
+import { apiResponseWrapperMiddleware } from "./middlewares/api-response-wrapper.middleware.js";
 import { errorHandlerMiddleware } from "./middlewares/error-handler.middleware.js";
 
 const app = express();
@@ -21,6 +22,7 @@ async function main() {
 
 function setupMiddlewares() {
   app.use(express.json());
+  app.use(apiResponseWrapperMiddleware);
 }
 
 function setupRoutes() {

@@ -10,20 +10,20 @@ class AuthController {
   async register(req: Request<object, object, RegisterDTO>, res: Response) {
     const { name, email, password } = await validateDTO(RegisterDTO, req.body);
 
-    await this.authService.register(name, email, password);
-    res.json({ name, email });
+    const response = await this.authService.register(name, email, password);
+    res.apiResponseCreated("Usuário cadastrado com sucesso", response);
   }
 
   async login(req: Request<object, object, LoginDTO>, res: Response) {
     const { email, password } = await validateDTO(LoginDTO, req.body);
 
     const response = await this.authService.login(email, password);
-    res.json(response);
+    res.apiResponseOk("Login realizado com sucesso", response);
   }
 
   async me(req: Request, res: Response) {
     const user = req.user;
-    res.json(user);
+    res.apiResponseOk("Usuário encontrado", user);
   }
 }
 

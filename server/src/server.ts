@@ -5,6 +5,7 @@ import authRouter from "./routes/auth.routes.js";
 import { apiResponseWrapperMiddleware } from "./middlewares/api-response-wrapper.middleware.js";
 import { errorHandlerMiddleware } from "./middlewares/error-handler.middleware.js";
 import taskRouter from "./routes/task.routes.js";
+import cors from "cors";
 
 const app = express();
 const port = ENV.PORT;
@@ -23,6 +24,11 @@ async function main() {
 
 function setupMiddlewares() {
   app.use(express.json());
+  app.use(
+    cors({
+      origin: "http://localhost:4200",
+    }),
+  );
   app.use(apiResponseWrapperMiddleware);
 }
 

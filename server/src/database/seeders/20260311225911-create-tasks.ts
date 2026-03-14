@@ -60,6 +60,15 @@ export default {
 
     const userId = user.id;
 
+    const existsTasks = await queryInterface.rawSelect("tasks", {
+      where: { user_id: userId },
+    }, ["id"]);
+
+    if (existsTasks && existsTasks.length > 0) {
+      console.log("Tasks already exists");
+      return;
+    }
+
     const tasks = generateTasks({
       count: 20,
       userId,

@@ -1,13 +1,27 @@
 import { QueryInterface } from "sequelize";
 import argon2 from "argon2";
 import { fakerPT_BR as faker } from "@faker-js/faker";
+import UserModel from "../models/user.model.js";
 
 export default {
   async up(queryInterface: QueryInterface) {
-    const password = await argon2.hash("senha123");
-    const name = faker.person.fullName();
-    const firstName = name.split(" ")[0]!;
-    const email = faker.internet.email({ firstName: firstName.toLowerCase() });
+    const password = await argon2.hash("essentia");
+    const name = "Essentia";
+    const email = "essential@email.com";
+
+    const existingUser = await queryInterface.rawSelect(
+      "users",
+      {
+        where: { email },
+      },
+      "id",
+      UserModel,
+    );
+
+    if (existingUser) {
+      console.log("User already exists");
+      return;
+    }
 
     return queryInterface.bulkInsert(
       "users",

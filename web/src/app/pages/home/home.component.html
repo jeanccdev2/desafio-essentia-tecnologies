@@ -1,0 +1,42 @@
+<section class="min-h-screen bg-slate-50 text-slate-900">
+  <div class="mx-auto max-w-6xl px-6 py-10">
+    <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Dashboard</p>
+        <h1 class="text-2xl font-bold text-slate-900 sm:text-3xl">Seus cards</h1>
+        <p class="mt-1 text-sm text-slate-600">
+          Resumo das atividades em andamento, pendentes e concluídas.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2 text-sm font-medium">
+        <span class="badge">Total {{ total }}</span>
+        <span class="badge badge-soft-amber">Pendentes {{ pending }}</span>
+        <span class="badge badge-soft-blue">Em andamento {{ inProgress }}</span>
+        <span class="badge badge-soft-emerald">Concluídas {{ completed }}</span>
+      </div>
+    </header>
+
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <article *ngFor="let task of tasks; trackBy: trackById" class="card">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              {{ task.id }}
+            </p>
+            <h2 class="mt-1 text-lg font-semibold text-slate-900">{{ task.title }}</h2>
+          </div>
+          <span class="status-badge" [ngClass]="statusCopy[task.status].badge">
+            <span class="status-dot" [ngClass]="statusCopy[task.status].dot"></span>
+            {{ statusCopy[task.status].label }}
+          </span>
+        </div>
+
+        <p class="mt-3 text-sm text-slate-600">{{ task.description }}</p>
+
+        <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+          <span class="font-medium">Criado em {{ task.createdAt | date: 'dd/MM/yyyy' }}</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

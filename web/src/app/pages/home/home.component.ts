@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 
 import { Task, TaskPayload, TaskStatus } from '../../../core/task/task.model';
@@ -13,13 +13,20 @@ import { TaskCardComponent } from '../../components/task-card/task-card.componen
   standalone: true,
   imports: [CommonModule, TaskModalComponent, TaskCardComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
   private readonly taskService = inject(TaskService);
   private readonly authStore = inject(AuthStore);
 
   tasks = signal<Task[]>([]);
+  selectedStatus = signal<TaskStatus | null>(null);
+  filteredTasks = computed(() => {
+    const status = this.selectedStatus();
+    const list = this.tasks();
+
+    return status ? list.filter((task) => task.status === status) : list;
+  });
   loading = false;
   creating = false;
   error: string | null = null;
@@ -63,7 +70,7 @@ export class HomeComponent implements OnInit {
   }
 
   get total(): number {
-    return this.tasks.length;
+    return this.tasks().length;
   }
 
   get pending(): number {
@@ -76,6 +83,34 @@ export class HomeComponent implements OnInit {
 
   get completed(): number {
     return this.countByStatus('completed');
+  }
+
+  selectStatus(status: TaskStatus): void {
+    this.selectedStatus.set(this.selectedStatus() === status ? null : status);
+  }
+
+  clearFilter(): void {
+    this.selectedStatus.set(null);
+  }
+
+  badgeClasses(status?: TaskStatus) {
+    const current = this.selectedStatus();
+    const isActive = status ? current === status : !current;
+
+    return {
+      badge: true,
+      'cursor-pointer': true,
+      'badge-soft-amber': status === 'pending',
+      'badge-soft-blue': status === 'in_progress',
+      'badge-soft-emerald': status === 'completed',
+      'ring-2': isActive,
+      'ring-slate-300': !status && isActive,
+      'ring-amber-300': status === 'pending' && isActive,
+      'ring-blue-300': status === 'in_progress' && isActive,
+      'ring-emerald-300': status === 'completed' && isActive,
+      'shadow-md': isActive,
+      'badge-active': isActive,
+    };
   }
 
   private countByStatus(status: TaskStatus): number {

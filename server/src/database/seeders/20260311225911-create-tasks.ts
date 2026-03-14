@@ -21,10 +21,15 @@ function generateTasks({ count = 10, userId }: SeedOptions): TaskSeedRow[] {
   const tasks: TaskSeedRow[] = [];
 
   for (let i = 0; i < count; i++) {
-    const createdAt = faker.date.past({
-      years: 2020,
+    const createdAt = faker.date.between({
+      from: new Date("2020-01-01"),
+      to: new Date(),
     });
-    const updatedAt = faker.date.between({ from: createdAt, to: new Date() });
+
+    const updatedAt = faker.date.between({
+      from: createdAt,
+      to: new Date(),
+    });
 
     tasks.push({
       id: faker.string.uuid(),

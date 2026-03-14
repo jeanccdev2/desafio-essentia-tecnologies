@@ -54,4 +54,10 @@ export class TaskService {
 
     return updated?.dataValues ?? null;
   }
+
+  async delete(userId: string, taskId: string): Promise<boolean> {
+    const deletedCount = await this.taskRepository.destroy({ where: { id: taskId, user_id: userId } });
+
+    return deletedCount > 0;
+  }
 }

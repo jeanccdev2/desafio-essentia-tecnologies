@@ -40,6 +40,19 @@ class TaskController {
 
     res.apiResponseOk("Tarefa atualizada com sucesso", task);
   }
+
+  async delete(req: Request<{ id: string }>, res: Response) {
+    const userId = req.user.id;
+    const taskId = req.params.id;
+
+    const deleted = await this.taskService.delete(userId, taskId);
+
+    if (!deleted) {
+      throw new NotFoundException("Tarefa não encontrada");
+    }
+
+    res.apiResponseOk("Tarefa excluída com sucesso");
+  }
 }
 
 export default TaskController;

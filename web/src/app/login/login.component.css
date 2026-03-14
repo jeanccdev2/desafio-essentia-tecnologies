@@ -1,0 +1,71 @@
+.card {
+  min-width: 400px;
+  width: 100%;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+header {
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.muted {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+input {
+  padding: 0.6rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+input:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+small {
+  color: #d33;
+  font-size: 0.8rem;
+}
+
+.error {
+  background: #fee;
+  color: #b00;
+  padding: 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+button {
+  margin-top: 0.5rem;
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: none;
+  background: #4f46e5;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -3,6 +3,8 @@ import { TaskService } from "../services/task.service.js";
 import { PaginationParamsDTO } from "../dtos/pagination.dto.js";
 import { validateDTO } from "../utils/validate-dto.util.js";
 import { TaskCreateDTO } from "../dtos/task-create.dto.js";
+import { TaskUpdateDTO } from "../dtos/task-update.dto.js";
+import { NotFoundException } from "../exceptions/not-found.exception.js";
 
 class TaskController {
   private taskService = new TaskService();
@@ -23,6 +25,20 @@ class TaskController {
     const task = await this.taskService.create(userId, payload);
 
     res.apiResponseCreated("Tarefa criada com sucesso", task);
+  }
+
+  async update(req: Request<{ id: string }, object, TaskUpdateDTO>, res: Response) {
+    const payload = await validateDTO(TaskUpdateDTO, req.body);
+    const userId = req.user.id;
+    const taskId = req.params.id;
+
+    const task = await this.taskService.update(userId, taskId, payload);
+
+    if (!task) {
+      throw new NotFoundException("Tarefa não encontrada");
+    }
+
+    res.apiResponseOk("Tarefa atualizada com sucesso", task);
   }
 }
 

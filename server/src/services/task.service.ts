@@ -3,6 +3,7 @@ import { PaginatedResponseDTO } from "../dtos/pagination.dto.js";
 import type { PaginatedResponse, PaginationParams } from "../types/pagination.type.js";
 import type { Task } from "../types/task.type.js";
 import type { TaskCreateDTO } from "../dtos/task-create.dto.js";
+import type { TaskUpdateDTO } from "../dtos/task-update.dto.js";
 
 export class TaskService {
   private taskRepository: typeof TaskModel;
@@ -37,5 +38,20 @@ export class TaskService {
     });
 
     return task.dataValues;
+  }
+
+  async update(userId: string, taskId: string, payload: TaskUpdateDTO): Promise<Task | null> {
+    const [affected] = await this.taskRepository.update(payload, {
+      where: { id: taskId, user_id: userId },
+      returning: true,
+    });
+
+    if (affected === 0) {
+      return null;
+    }
+
+    const updated = await this.taskRepository.findOne({ where: { id: taskId, user_id: userId } });
+
+    return updated?.dataValues ?? null;
   }
 }

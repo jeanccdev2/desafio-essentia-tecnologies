@@ -41,6 +41,16 @@
       <button class="logout" type="button" (click)="logout()">Sair</button>
     </header>
 
+    <div class="flex justify-end">
+      <app-pagination
+        [currentPage]="currentPage()"
+        [totalPages]="totalPages()"
+        [totalItems]="totalItems()"
+        [pageSize]="pageSize"
+        (pageChange)="goToPage($event)"
+      />
+    </div>
+
     <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <app-task-card
         *ngFor="let task of tasks(); trackBy: trackById"

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 
 import { Task, TaskPayload, TaskStatus } from '../../../core/task/task.model';
@@ -7,11 +7,12 @@ import { TaskService } from '../../../core/task/task.service';
 import { AuthStore } from '../../../core/auth/auth.store';
 import { TaskModalComponent } from '../../components/task-modal/task-modal.component';
 import { TaskCardComponent } from '../../components/task-card/task-card.component';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, TaskModalComponent, TaskCardComponent],
+  imports: [CommonModule, TaskModalComponent, TaskCardComponent, PaginationComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
@@ -21,6 +22,10 @@ export class HomeComponent implements OnInit {
 
   tasks = signal<Task[]>([]);
   selectedStatus = signal<TaskStatus | null>(null);
+  currentPage = signal(1);
+  readonly pageSize = 6;
+  totalItems = signal(0);
+  totalPages = signal(1);
   loading = false;
   creating = false;
   error: string | null = null;
@@ -44,11 +49,23 @@ export class HomeComponent implements OnInit {
     this.fetchTasks();
   }
 
+  goToPage(page: number) {
+    const target = Math.min(Math.max(page, 1), this.totalPages());
+    if (target === this.currentPage()) return;
+
+    this.currentPage.set(target);
+    this.fetchTasks(this.selectedStatus());
+  }
+
   fetchTasks(status?: TaskStatus | null): void {
     this.loading = true;
     this.error = null;
 
-    const params = status ? { status } : {};
+    const params = {
+      page: this.currentPage(),
+      limit: this.pageSize,
+      ...(status ? { status } : {}),
+    };
 
     this.taskService
       .getAll(params)
@@ -56,6 +73,8 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.tasks.set(response.data ?? []);
+          this.totalItems.set(response.totalItems ?? 0);
+          this.totalPages.set(response.totalPages ?? 1);
         },
         error: (err) => {
           console.error('Erro ao carregar tasks', err);
@@ -83,11 +102,13 @@ export class HomeComponent implements OnInit {
   selectStatus(status: TaskStatus): void {
     const nextStatus = this.selectedStatus() === status ? null : status;
     this.selectedStatus.set(nextStatus);
+    this.currentPage.set(1);
     this.fetchTasks(nextStatus);
   }
 
   clearFilter(): void {
     this.selectedStatus.set(null);
+    this.currentPage.set(1);
     this.fetchTasks();
   }
 

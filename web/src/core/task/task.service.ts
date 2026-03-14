@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { environment } from '../env';
 import { ApiResponseInterface } from '../types/api-response.type';
@@ -14,8 +14,21 @@ export class TaskService {
 
   getAll(
     params: { page?: number; limit?: number; status?: string } = {},
-  ): Observable<ApiResponseInterface<Task[]>> {
-    return this.http.get<ApiResponseInterface<Task[]>>(this.baseUrl, { params });
+  ): Observable<{ data: Task[]; totalItems: number; totalPages: number }> {
+    return this.http
+      .get<ApiResponseInterface<Task[]>>(this.baseUrl, { params, observe: 'response' })
+      .pipe(
+        map((response) => {
+          const totalItems = Number(response.headers.get('X-Total-Items') ?? '0');
+          const totalPages = Number(response.headers.get('X-Total-Pages') ?? '1');
+
+          return {
+            data: response.body?.data ?? [],
+            totalItems,
+            totalPages,
+          };
+        }),
+      );
   }
 
   create(payload: TaskPayload): Observable<ApiResponseInterface<Task>> {

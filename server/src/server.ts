@@ -28,6 +28,7 @@ function setupMiddlewares() {
   app.use(
     cors({
       origin: "http://localhost:4200",
+      exposedHeaders: ['X-Total-Items', 'X-Total-Pages'],
     }),
   );
   app.use(apiResponseWrapperMiddleware);

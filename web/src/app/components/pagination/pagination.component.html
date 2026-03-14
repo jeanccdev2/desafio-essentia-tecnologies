@@ -1,0 +1,11 @@
+<div class="pagination">
+  <div class="info">
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <span *ngIf="totalItems > 0">• Exibindo {{ startItem }}-{{ endItem }} de {{ totalItems }} registros</span>
+    <span *ngIf="totalItems === 0">• Nenhum registro</span>
+  </div>
+  <div class="actions">
+    <button type="button" class="ghost" (click)="prev()" [disabled]="currentPage === 1">Anterior</button>
+    <button type="button" class="primary" (click)="next()" [disabled]="currentPage === totalPages || totalPages === 0">Próxima</button>
+  </div>
+</div>

@@ -1,11 +1,14 @@
 import { IsNumber, Max, Min } from "class-validator";
+import { Type } from "class-transformer";
 import type { PaginatedResponse } from "../types/pagination.type.js";
 
 export class PaginationParamsDTO {
+  @Type(() => Number)
   @IsNumber()
   @Min(1)
   page: number = 1;
 
+  @Type(() => Number)
   @IsNumber()
   @Min(1)
   @Max(100)

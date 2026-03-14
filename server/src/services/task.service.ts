@@ -16,15 +16,16 @@ export class TaskService {
     userId: string,
     pagination: PaginationParams,
   ): Promise<PaginatedResponse<Task>> {
-    const tasks = await this.taskRepository.findAll({
+    const { rows, count } = await this.taskRepository.findAndCountAll({
       where: { user_id: userId },
       limit: pagination.limit,
       offset: pagination.offset,
+      order: [["created_at", "DESC"]],
     });
 
-    const tasksValues = tasks.map((task) => task.dataValues);
+    const tasksValues = rows.map((task) => task.dataValues);
 
-    const response = new PaginatedResponseDTO(tasksValues, pagination.limit, tasksValues.length);
+    const response = new PaginatedResponseDTO(tasksValues, pagination.limit, count);
 
     return response;
   }

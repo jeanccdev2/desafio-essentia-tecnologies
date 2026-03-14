@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import express from "express";
 import { ENV } from "./config/env.js";
 import sequelize from "./database/database.js";

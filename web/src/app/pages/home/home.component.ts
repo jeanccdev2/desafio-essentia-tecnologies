@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   selectedStatus = signal<TaskStatus | null>(null);
   searchText = signal('');
   currentPage = signal(1);
-  readonly pageSize = 6;
+  readonly pageSize = 10;
   totalItems = signal(0);
   totalPages = signal(1);
   loading = false;
@@ -228,6 +228,7 @@ export class HomeComponent implements OnInit {
             const newTask = response.data;
             if (newTask) {
               this.tasks.set([newTask, ...this.tasks()]);
+              this.fetchTasks();
             }
             this.closeModal();
           },

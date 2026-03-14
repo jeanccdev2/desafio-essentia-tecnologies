@@ -27,7 +27,7 @@ function setupMiddlewares() {
   app.use(express.json());
   app.use(
     cors({
-      origin: "http://localhost:4200",
+      origin: ["http://localhost:4200", "http://localhost:8080"],
       exposedHeaders: ['X-Total-Items', 'X-Total-Pages'],
     }),
   );

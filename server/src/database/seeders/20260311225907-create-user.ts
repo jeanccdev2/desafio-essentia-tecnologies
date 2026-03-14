@@ -7,7 +7,7 @@ export default {
   async up(queryInterface: QueryInterface) {
     const password = await argon2.hash("essentia");
     const name = "Essentia";
-    const email = "essential@email.com";
+    const email = "admin@essentia.com";
 
     const existingUser = await queryInterface.rawSelect(
       "users",

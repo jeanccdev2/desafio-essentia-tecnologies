@@ -17,8 +17,8 @@ export class TaskDetailComponent implements OnInit {
   private readonly taskService = inject(TaskService);
 
   task = signal<Task | null>(null);
-  loading = false;
-  error: string | null = null;
+  loading = signal(false);
+  error = signal<string | null>(null);
 
   readonly statusCopy: Record<TaskStatus, { label: string; badge: string; dot: string }> = {
     pending: { label: 'Pendente', badge: 'badge-soft-amber', dot: 'dot-amber' },
@@ -29,7 +29,7 @@ export class TaskDetailComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
-      this.error = 'Tarefa não encontrada.';
+      this.error.set('Tarefa não encontrada.');
       return;
     }
 
@@ -37,21 +37,21 @@ export class TaskDetailComponent implements OnInit {
   }
 
   private fetchTask(id: string): void {
-    this.loading = true;
-    this.error = null;
+    this.loading.set(true);
+    this.error.set(null);
 
     this.taskService.getById(id).subscribe({
       next: (response: { data?: Task | null }) => {
         this.task.set(response.data ?? null);
         if (!this.task()) {
-          this.error = 'Tarefa não encontrada.';
+          this.error.set('Tarefa não encontrada.');
         }
-        this.loading = false;
+        this.loading.set(false);
       },
       error: (err: unknown) => {
         console.error('Erro ao carregar tarefa', err);
-        this.error = 'Não foi possível carregar a tarefa. Tente novamente.';
-        this.loading = false;
+        this.error.set('Não foi possível carregar a tarefa. Tente novamente.');
+        this.loading.set(false);
       },
     });
   }

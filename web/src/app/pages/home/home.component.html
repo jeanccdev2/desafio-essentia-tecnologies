@@ -81,8 +81,8 @@
     [form]="form"
     [statuses]="statuses"
     [statusCopy]="statusCopy"
-    [creating]="creating"
-    [isEditing]="isEditing"
+    [creating]="creating()"
+    [isEditing]="isEditing()"
     (close)="closeModal()"
     (submit)="submitTask()"
   />

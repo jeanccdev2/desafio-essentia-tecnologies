@@ -1,4 +1,4 @@
-<section class="detail-container" *ngIf="task() && !loading; else loadingOrError">
+<section class="detail-container" *ngIf="task() && !loading(); else loadingOrError">
   <header class="detail-header">
     <div>
       <p class="task-id">#{{ task()?.id }}</p>
@@ -20,6 +20,6 @@
 </section>
 
 <ng-template #loadingOrError>
-  <div class="state" *ngIf="loading">Carregando...</div>
-  <div class="state error" *ngIf="!loading && error">{{ error }}</div>
+  <div class="state" *ngIf="loading()">Carregando...</div>
+  <div class="state error" *ngIf="!loading() && error()">{{ error() }}</div>
 </ng-template>

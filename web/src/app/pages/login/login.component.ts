@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
@@ -20,8 +20,8 @@ export class LoginComponent {
   private readonly authStore = inject(AuthStore);
   private readonly router = inject(Router);
 
-  loading = false;
-  error: string | null = null;
+  loading = signal(false);
+  error = signal<string | null>(null);
 
   readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -37,13 +37,13 @@ export class LoginComponent {
   }
 
   async submit(): Promise<void> {
-    if (this.loading || this.form.invalid) {
+    if (this.loading() || this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    this.loading = true;
-    this.error = null;
+    this.loading.set(true);
+    this.error.set(null);
 
     try {
       const { email, password } = this.form.getRawValue();
@@ -55,9 +55,9 @@ export class LoginComponent {
       await this.router.navigate(['/app']);
     } catch (err) {
       console.error('login failed', err);
-      this.error = 'Credenciais inválidas ou erro no servidor.';
+      this.error.set('Credenciais inválidas ou erro no servidor.');
     } finally {
-      this.loading = false;
+      this.loading.set(false);
     }
   }
 }

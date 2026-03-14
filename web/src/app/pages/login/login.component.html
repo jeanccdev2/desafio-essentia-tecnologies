@@ -38,13 +38,13 @@
     }
   </label>
 
-  @if (error) {
-  <div class="error">{{ error }}</div>
+  @if (error()) {
+  <div class="error">{{ error() }}</div>
   }
 
   <div class="actions">
-    <button type="submit" [disabled]="loading || form.invalid">
-      {{ loading ? 'Entrando...' : 'Entrar' }}
+    <button type="submit" [disabled]="loading() || form.invalid">
+      {{ loading() ? 'Entrando...' : 'Entrar' }}
     </button>
 
     <a class="secondary" routerLink="/cadastro">Cadastro</a>

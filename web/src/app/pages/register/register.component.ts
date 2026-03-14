@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
@@ -20,8 +20,8 @@ export class RegisterComponent {
   private readonly authStore = inject(AuthStore);
   private readonly router = inject(Router);
 
-  loading = false;
-  error: string | null = null;
+  loading = signal(false);
+  error = signal<string | null>(null);
 
   readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -42,13 +42,13 @@ export class RegisterComponent {
   }
 
   async submit(): Promise<void> {
-    if (this.loading || this.form.invalid) {
+    if (this.loading() || this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    this.loading = true;
-    this.error = null;
+    this.loading.set(true);
+    this.error.set(null);
 
     try {
       const { name, email, password } = this.form.getRawValue();
@@ -60,9 +60,9 @@ export class RegisterComponent {
       await this.router.navigate(['/app']);
     } catch (err) {
       console.error('register failed', err);
-      this.error = 'Erro ao cadastrar. Tente novamente.';
+      this.error.set('Erro ao cadastrar. Tente novamente.');
     } finally {
-      this.loading = false;
+      this.loading.set(false);
     }
   }
 }

@@ -27,12 +27,12 @@ export class HomeComponent implements OnInit {
   readonly pageSize = 10;
   totalItems = signal(0);
   totalPages = signal(1);
-  loading = false;
-  creating = false;
-  error: string | null = null;
+  loading = signal(false);
+  creating = signal(false);
+  error = signal<string | null>(null);
   isModalOpen = signal(false);
-  isEditing = false;
-  editingTaskId: string | null = null;
+  isEditing = signal(false);
+  editingTaskId = signal<string | null>(null);
   form: TaskPayload = { title: '', description: '', status: 'pending' };
   readonly statuses: TaskStatus[] = ['pending', 'in_progress', 'completed'];
 
@@ -59,8 +59,8 @@ export class HomeComponent implements OnInit {
   }
 
   fetchTasks(status: TaskStatus | null = this.selectedStatus(), searchText = this.searchText()): void {
-    this.loading = true;
-    this.error = null;
+    this.loading.set(true);
+    this.error.set(null);
 
     const params = {
       page: this.currentPage(),
@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit {
 
     this.taskService
       .getAll(params)
-      .pipe(finalize(() => (this.loading = false)))
+      .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (response) => {
           this.tasks.set(response.data ?? []);
@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit {
         },
         error: (err) => {
           console.error('Erro ao carregar tasks', err);
-          this.error = 'Não foi possível carregar os cards agora. Tente novamente em instantes.';
+          this.error.set('Não foi possível carregar os cards agora. Tente novamente em instantes.');
         },
       });
   }
@@ -172,15 +172,15 @@ export class HomeComponent implements OnInit {
   }
 
   openCreateModal(): void {
-    this.isEditing = false;
-    this.editingTaskId = null;
+    this.isEditing.set(false);
+    this.editingTaskId.set(null);
     this.form = { title: '', description: '', status: 'pending' };
     this.isModalOpen.set(true);
   }
 
   openEditModal(task: Task): void {
-    this.isEditing = true;
-    this.editingTaskId = task.id;
+    this.isEditing.set(true);
+    this.editingTaskId.set(task.id);
     this.form = {
       title: task.title,
       description: task.description ?? '',
@@ -191,8 +191,8 @@ export class HomeComponent implements OnInit {
 
   closeModal(): void {
     this.isModalOpen.set(false);
-    this.isEditing = false;
-    this.editingTaskId = null;
+    this.isEditing.set(false);
+    this.editingTaskId.set(null);
     this.form = { title: '', description: '', status: 'pending' };
   }
 
@@ -201,12 +201,12 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    this.creating = true;
+    this.creating.set(true);
 
-    if (this.isEditing && this.editingTaskId) {
+    if (this.isEditing() && this.editingTaskId()) {
       this.taskService
-        .update(this.editingTaskId, this.form)
-        .pipe(finalize(() => (this.creating = false)))
+        .update(this.editingTaskId()!, this.form)
+        .pipe(finalize(() => this.creating.set(false)))
         .subscribe({
           next: (response) => {
             const updated = response.data;
@@ -222,7 +222,7 @@ export class HomeComponent implements OnInit {
     } else {
       this.taskService
         .create(this.form)
-        .pipe(finalize(() => (this.creating = false)))
+        .pipe(finalize(() => this.creating.set(false)))
         .subscribe({
           next: (response) => {
             const newTask = response.data;

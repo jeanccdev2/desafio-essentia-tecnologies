@@ -4,6 +4,7 @@ import type { PaginatedResponse, PaginationParams } from "../types/pagination.ty
 import type { Task } from "../types/task.type.js";
 import type { TaskCreateDTO } from "../dtos/task-create.dto.js";
 import type { TaskUpdateDTO } from "../dtos/task-update.dto.js";
+import { Op } from "sequelize";
 
 export class TaskService {
   private taskRepository: typeof TaskModel;
@@ -17,9 +18,17 @@ export class TaskService {
     pagination: PaginationParams,
   ): Promise<PaginatedResponse<Task>> {
     const statusFilter = pagination.status ? { status: pagination.status } : {};
+    const searchFilter = pagination.searchText
+      ? {
+          [Op.or]: [
+            { title: { [Op.like]: `%${pagination.searchText}%` } },
+            { description: { [Op.like]: `%${pagination.searchText}%` } },
+          ],
+        }
+      : {};
 
     const { rows, count } = await this.taskRepository.findAndCountAll({
-      where: { user_id: userId, ...statusFilter },
+      where: { user_id: userId, ...statusFilter, ...searchFilter },
       limit: pagination.limit,
       offset: pagination.offset,
       order: [["created_at", "DESC"]],

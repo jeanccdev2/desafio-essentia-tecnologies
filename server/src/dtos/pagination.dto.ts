@@ -1,5 +1,5 @@
-import { IsIn, IsNumber, IsOptional, Max, Min } from "class-validator";
-import { Type } from "class-transformer";
+import { IsIn, IsNumber, IsOptional, IsString, Max, MaxLength, Min } from "class-validator";
+import { Transform, Type } from "class-transformer";
 import type { PaginatedResponse } from "../types/pagination.type.js";
 import type { TaskStatus } from "../types/task.type.js";
 
@@ -18,6 +18,12 @@ export class PaginationParamsDTO {
   @IsOptional()
   @IsIn(["pending", "in_progress", "completed"])
   status?: TaskStatus;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(120)
+  @Transform(({ value }) => (typeof value === "string" ? value.trim() : value))
+  searchText?: string;
 
   get offset(): number {
     return (this.page - 1) * this.limit;

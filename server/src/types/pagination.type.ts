@@ -5,6 +5,7 @@ export type PaginationParams = {
   limit: number;
   offset: number;
   status?: TaskStatus;
+  searchText?: string;
 };
 
 export interface PaginatedResponse<T> {

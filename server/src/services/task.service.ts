@@ -2,6 +2,7 @@ import TaskModel from "../database/models/task.model.js";
 import { PaginatedResponseDTO } from "../dtos/pagination.dto.js";
 import type { PaginatedResponse, PaginationParams } from "../types/pagination.type.js";
 import type { Task } from "../types/task.type.js";
+import type { TaskCreateDTO } from "../dtos/task-create.dto.js";
 
 export class TaskService {
   private taskRepository: typeof TaskModel;
@@ -25,5 +26,16 @@ export class TaskService {
     const response = new PaginatedResponseDTO(tasksValues, pagination.limit, tasksValues.length);
 
     return response;
+  }
+
+  async create(userId: string, payload: TaskCreateDTO): Promise<Task> {
+    const task = await this.taskRepository.create({
+      title: payload.title,
+      description: payload.description ?? "",
+      status: payload.status,
+      user_id: userId,
+    });
+
+    return task.dataValues;
   }
 }

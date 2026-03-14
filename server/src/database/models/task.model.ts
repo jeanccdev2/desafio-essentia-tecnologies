@@ -3,7 +3,7 @@ import sequelize from "../database.js";
 import type { Task } from "../../types/task.type.js";
 import UserModel from "./user.model.js";
 
-type TaskInputtableTypes = Optional<Task, "id">;
+type TaskInputtableTypes = Optional<Task, "id" | "created_at" | "updated_at" | "deleted_at">;
 type TaskSequelizeModelCreator = ModelDefined<Task, TaskInputtableTypes>;
 
 const TaskModel: TaskSequelizeModelCreator = sequelize.define(

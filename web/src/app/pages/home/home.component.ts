@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 
 import { Task, TaskStatus } from '../../../core/task/task.model';
@@ -15,7 +15,7 @@ import { TaskService } from '../../../core/task/task.service';
 export class HomeComponent implements OnInit {
   private readonly taskService = inject(TaskService);
 
-  tasks: Task[] = [];
+  tasks = signal<Task[]>([]);
   loading = false;
   error: string | null = null;
 
@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: (response) => {
           console.log('Response:', response.data);
-          this.tasks = response.data ?? [];
+          this.tasks.set(response.data ?? []);
         },
         error: (err) => {
           console.error('Erro ao carregar tasks', err);
@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit {
   }
 
   private countByStatus(status: TaskStatus): number {
-    return this.tasks.filter((task) => task.status === status).length;
+    return this.tasks().filter((task) => task.status === status).length;
   }
 
   trackById(_: number, task: Task) {

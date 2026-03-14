@@ -17,7 +17,7 @@
     </header>
 
     <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <article *ngFor="let task of tasks; trackBy: trackById" class="card">
+      <article *ngFor="let task of tasks()">
         <div class="flex items-start justify-between gap-3">
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">

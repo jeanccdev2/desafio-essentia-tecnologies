@@ -4,6 +4,7 @@ import { finalize } from 'rxjs';
 
 import { Task, TaskPayload, TaskStatus } from '../../../core/task/task.model';
 import { TaskService } from '../../../core/task/task.service';
+import { AuthStore } from '../../../core/auth/auth.store';
 import { TaskModalComponent } from '../../components/task-modal/task-modal.component';
 import { TaskCardComponent } from '../../components/task-card/task-card.component';
 
@@ -16,6 +17,7 @@ import { TaskCardComponent } from '../../components/task-card/task-card.componen
 })
 export class HomeComponent implements OnInit {
   private readonly taskService = inject(TaskService);
+  private readonly authStore = inject(AuthStore);
 
   tasks = signal<Task[]>([]);
   loading = false;
@@ -112,5 +114,11 @@ export class HomeComponent implements OnInit {
           console.error('Erro ao criar task', err);
         },
       });
+  }
+
+  async logout(): Promise<void> {
+    this.tasks.set([]);
+    this.form = { title: '', description: '', status: 'pending' };
+    await this.authStore.logout();
   }
 }

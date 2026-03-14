@@ -1,5 +1,5 @@
 <section class="min-h-screen bg-slate-50 text-slate-900">
-  <div class="mx-auto max-w-6xl px-6 py-10">
+  <div class="w-full px-6 py-10">
     <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Dashboard</p>
@@ -14,6 +14,7 @@
         <span class="badge badge-soft-blue">Em andamento {{ inProgress }}</span>
         <span class="badge badge-soft-emerald">Concluídas {{ completed }}</span>
       </div>
+      <button class="logout" type="button" (click)="logout()">Sair</button>
     </header>
 
     <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

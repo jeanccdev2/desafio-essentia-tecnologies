@@ -5,11 +5,12 @@ import { finalize } from 'rxjs';
 import { Task, TaskPayload, TaskStatus } from '../../../core/task/task.model';
 import { TaskService } from '../../../core/task/task.service';
 import { TaskModalComponent } from '../../components/task-modal/task-modal.component';
+import { TaskCardComponent } from '../../components/task-card/task-card.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, TaskModalComponent],
+  imports: [CommonModule, TaskModalComponent, TaskCardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })

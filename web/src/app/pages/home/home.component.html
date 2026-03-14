@@ -22,11 +22,12 @@
         *ngFor="let task of tasks(); trackBy: trackById"
         [task]="task"
         [statusCopy]="statusCopy"
+        (edit)="openEditModal(task)"
       />
     </div>
   </div>
 
-  <button class="fab" type="button" (click)="openModal()" aria-label="Adicionar tarefa">
+  <button class="fab" type="button" (click)="openCreateModal()" aria-label="Adicionar tarefa">
     +
   </button>
 
@@ -36,7 +37,8 @@
     [statuses]="statuses"
     [statusCopy]="statusCopy"
     [creating]="creating"
+    [isEditing]="isEditing"
     (close)="closeModal()"
-    (submit)="createTask()"
+    (submit)="submitTask()"
   />
 </section>

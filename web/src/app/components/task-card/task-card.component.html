@@ -14,5 +14,8 @@
 
   <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
     <span class="font-medium">Criado em {{ task.createdAt | date: 'dd/MM/yyyy' }}</span>
+    <button type="button" class="edit-btn" (click)="handleEdit()" aria-label="Editar tarefa">
+      ✏️
+    </button>
   </div>
 </article>

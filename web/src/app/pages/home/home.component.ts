@@ -24,6 +24,8 @@ export class HomeComponent implements OnInit {
   creating = false;
   error: string | null = null;
   isModalOpen = signal(false);
+  isEditing = false;
+  editingTaskId: string | null = null;
   form: TaskPayload = { title: '', description: '', status: 'pending' };
   readonly statuses: TaskStatus[] = ['pending', 'in_progress', 'completed'];
 
@@ -84,36 +86,71 @@ export class HomeComponent implements OnInit {
     return task.id;
   }
 
-  openModal(): void {
+  openCreateModal(): void {
+    this.isEditing = false;
+    this.editingTaskId = null;
+    this.form = { title: '', description: '', status: 'pending' };
+    this.isModalOpen.set(true);
+  }
+
+  openEditModal(task: Task): void {
+    this.isEditing = true;
+    this.editingTaskId = task.id;
+    this.form = {
+      title: task.title,
+      description: task.description ?? '',
+      status: task.status,
+    };
     this.isModalOpen.set(true);
   }
 
   closeModal(): void {
     this.isModalOpen.set(false);
+    this.isEditing = false;
+    this.editingTaskId = null;
     this.form = { title: '', description: '', status: 'pending' };
   }
 
-  createTask(): void {
+  submitTask(): void {
     if (!this.form.title.trim()) {
       return;
     }
 
     this.creating = true;
-    this.taskService
-      .create(this.form)
-      .pipe(finalize(() => (this.creating = false)))
-      .subscribe({
-        next: (response) => {
-          const newTask = response.data;
-          if (newTask) {
-            this.tasks.set([newTask, ...this.tasks()]);
-          }
-          this.closeModal();
-        },
-        error: (err) => {
-          console.error('Erro ao criar task', err);
-        },
-      });
+
+    if (this.isEditing && this.editingTaskId) {
+      this.taskService
+        .update(this.editingTaskId, this.form)
+        .pipe(finalize(() => (this.creating = false)))
+        .subscribe({
+          next: (response) => {
+            const updated = response.data;
+            if (updated) {
+              this.tasks.set(this.tasks().map((task) => (task.id === updated.id ? updated : task)));
+            }
+            this.closeModal();
+          },
+          error: (err) => {
+            console.error('Erro ao atualizar task', err);
+          },
+        });
+    } else {
+      this.taskService
+        .create(this.form)
+        .pipe(finalize(() => (this.creating = false)))
+        .subscribe({
+          next: (response) => {
+            const newTask = response.data;
+            if (newTask) {
+              this.tasks.set([newTask, ...this.tasks()]);
+            }
+            this.closeModal();
+          },
+          error: (err) => {
+            console.error('Erro ao criar task', err);
+          },
+        });
+    }
   }
 
   async logout(): Promise<void> {

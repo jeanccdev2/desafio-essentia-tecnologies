@@ -3,7 +3,7 @@
 <div class="modal" *ngIf="open">
   <div class="modal-card">
     <div class="modal-header">
-      <h3>Nova tarefa</h3>
+      <h3>{{ isEditing ? 'Editar tarefa' : 'Nova tarefa' }}</h3>
       <button class="icon-button" type="button" (click)="handleClose()" aria-label="Fechar">×</button>
     </div>
 
@@ -38,7 +38,9 @@
 
       <div class="modal-footer">
         <button type="button" class="ghost" (click)="handleClose()">Cancelar</button>
-        <button type="button" class="submit" (click)="handleSubmit()" [disabled]="creating">{{ creating ? 'Salvando...' : 'Salvar' }}</button>
+        <button type="button" class="submit" (click)="handleSubmit()" [disabled]="creating">
+          {{ creating ? 'Salvando...' : isEditing ? 'Atualizar' : 'Salvar' }}
+        </button>
       </div>
     </form>
   </div>

@@ -17,6 +17,7 @@ export class TaskModalComponent {
   @Input() statuses: TaskStatus[] = [];
   @Input() statusCopy!: Record<TaskStatus, { label: string; badge: string; dot: string }>;
   @Input() creating = false;
+  @Input() isEditing = false;
 
   @Output() close = new EventEmitter<void>();
   @Output() submit = new EventEmitter<void>();

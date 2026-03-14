@@ -50,7 +50,7 @@ export class LoginComponent {
 
       const res = await firstValueFrom(this.authService.login(email, password));
 
-      this.authStore.setSession(res);
+      this.authStore.setSession(res.data!);
 
       await this.router.navigate(['/app']);
     } catch (err) {

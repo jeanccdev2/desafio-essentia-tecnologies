@@ -41,7 +41,17 @@
       <button class="logout" type="button" (click)="logout()">Sair</button>
     </header>
 
-    <div class="flex justify-end">
+    <div class="controls">
+      <div class="search">
+        <input
+          type="search"
+          placeholder="Buscar por título ou descrição"
+          [value]="searchText()"
+          (input)="onSearch($any($event.target).value)"
+        />
+        <button *ngIf="searchText()" type="button" class="ghost" (click)="clearSearch()">Limpar</button>
+      </div>
+
       <app-pagination
         [currentPage]="currentPage()"
         [totalPages]="totalPages()"

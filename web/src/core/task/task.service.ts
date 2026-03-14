@@ -13,7 +13,7 @@ export class TaskService {
   constructor(private readonly http: HttpClient) {}
 
   getAll(
-    params: { page?: number; limit?: number; status?: string } = {},
+    params: { page?: number; limit?: number; status?: string; searchText?: string } = {},
   ): Observable<{ data: Task[]; totalItems: number; totalPages: number }> {
     return this.http
       .get<ApiResponseInterface<Task[]>>(this.baseUrl, { params, observe: 'response' })

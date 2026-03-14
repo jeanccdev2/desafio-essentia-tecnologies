@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
 
   tasks = signal<Task[]>([]);
   selectedStatus = signal<TaskStatus | null>(null);
+  searchText = signal('');
   currentPage = signal(1);
   readonly pageSize = 6;
   totalItems = signal(0);
@@ -54,10 +55,10 @@ export class HomeComponent implements OnInit {
     if (target === this.currentPage()) return;
 
     this.currentPage.set(target);
-    this.fetchTasks(this.selectedStatus());
+    this.fetchTasks();
   }
 
-  fetchTasks(status?: TaskStatus | null): void {
+  fetchTasks(status: TaskStatus | null = this.selectedStatus(), searchText = this.searchText()): void {
     this.loading = true;
     this.error = null;
 
@@ -65,6 +66,7 @@ export class HomeComponent implements OnInit {
       page: this.currentPage(),
       limit: this.pageSize,
       ...(status ? { status } : {}),
+      ...(searchText.trim() ? { searchText: searchText.trim() } : {}),
     };
 
     this.taskService
@@ -108,6 +110,19 @@ export class HomeComponent implements OnInit {
 
   clearFilter(): void {
     this.selectedStatus.set(null);
+    this.currentPage.set(1);
+    this.fetchTasks();
+  }
+
+  onSearch(text: string): void {
+    this.searchText.set(text);
+    this.currentPage.set(1);
+    this.fetchTasks();
+  }
+
+  clearSearch(): void {
+    if (!this.searchText()) return;
+    this.searchText.set('');
     this.currentPage.set(1);
     this.fetchTasks();
   }

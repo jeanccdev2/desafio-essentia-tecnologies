@@ -86,6 +86,22 @@ export class HomeComponent implements OnInit {
     return task.id;
   }
 
+  confirmAndDelete(task: Task): void {
+    const confirmed = confirm('Tem certeza que deseja excluir esta tarefa?');
+    if (!confirmed) {
+      return;
+    }
+
+    this.taskService.delete(task.id).subscribe({
+      next: () => {
+        this.tasks.set(this.tasks().filter((t) => t.id !== task.id));
+      },
+      error: (err) => {
+        console.error('Erro ao excluir task', err);
+      },
+    });
+  }
+
   openCreateModal(): void {
     this.isEditing = false;
     this.editingTaskId = null;

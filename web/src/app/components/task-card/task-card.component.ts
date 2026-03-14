@@ -15,8 +15,13 @@ export class TaskCardComponent {
   @Input({ required: true }) statusCopy!: Record<TaskStatus, { label: string; badge: string; dot: string }>;
 
   @Output() edit = new EventEmitter<Task>();
+  @Output() delete = new EventEmitter<Task>();
 
   handleEdit(): void {
     this.edit.emit(this.task);
+  }
+
+  handleDelete(): void {
+    this.delete.emit(this.task);
   }
 }

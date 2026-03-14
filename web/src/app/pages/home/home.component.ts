@@ -21,12 +21,6 @@ export class HomeComponent implements OnInit {
 
   tasks = signal<Task[]>([]);
   selectedStatus = signal<TaskStatus | null>(null);
-  filteredTasks = computed(() => {
-    const status = this.selectedStatus();
-    const list = this.tasks();
-
-    return status ? list.filter((task) => task.status === status) : list;
-  });
   loading = false;
   creating = false;
   error: string | null = null;
@@ -50,16 +44,17 @@ export class HomeComponent implements OnInit {
     this.fetchTasks();
   }
 
-  fetchTasks(): void {
+  fetchTasks(status?: TaskStatus | null): void {
     this.loading = true;
     this.error = null;
 
+    const params = status ? { status } : {};
+
     this.taskService
-      .getAll()
+      .getAll(params)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: (response) => {
-          console.log('Response:', response.data);
           this.tasks.set(response.data ?? []);
         },
         error: (err) => {
@@ -86,11 +81,14 @@ export class HomeComponent implements OnInit {
   }
 
   selectStatus(status: TaskStatus): void {
-    this.selectedStatus.set(this.selectedStatus() === status ? null : status);
+    const nextStatus = this.selectedStatus() === status ? null : status;
+    this.selectedStatus.set(nextStatus);
+    this.fetchTasks(nextStatus);
   }
 
   clearFilter(): void {
     this.selectedStatus.set(null);
+    this.fetchTasks();
   }
 
   badgeClasses(status?: TaskStatus) {

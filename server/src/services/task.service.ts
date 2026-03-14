@@ -16,8 +16,10 @@ export class TaskService {
     userId: string,
     pagination: PaginationParams,
   ): Promise<PaginatedResponse<Task>> {
+    const statusFilter = pagination.status ? { status: pagination.status } : {};
+
     const { rows, count } = await this.taskRepository.findAndCountAll({
-      where: { user_id: userId },
+      where: { user_id: userId, ...statusFilter },
       limit: pagination.limit,
       offset: pagination.offset,
       order: [["created_at", "DESC"]],

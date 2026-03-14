@@ -14,28 +14,28 @@
           type="button"
           (click)="clearFilter()"
         >
-          Total {{ total }}
+          Total
         </button>
         <button
           [ngClass]="badgeClasses('pending')"
           type="button"
           (click)="selectStatus('pending')"
         >
-          Pendentes {{ pending }}
+          Pendentes
         </button>
         <button
           [ngClass]="badgeClasses('in_progress')"
           type="button"
           (click)="selectStatus('in_progress')"
         >
-          Em andamento {{ inProgress }}
+          Em andamento
         </button>
         <button
           [ngClass]="badgeClasses('completed')"
           type="button"
           (click)="selectStatus('completed')"
         >
-          Concluídas {{ completed }}
+          Concluídas
         </button>
       </div>
       <button class="logout" type="button" (click)="logout()">Sair</button>
@@ -43,7 +43,7 @@
 
     <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <app-task-card
-        *ngFor="let task of filteredTasks(); trackBy: trackById"
+        *ngFor="let task of tasks(); trackBy: trackById"
         [task]="task"
         [statusCopy]="statusCopy"
         (edit)="openEditModal(task)"

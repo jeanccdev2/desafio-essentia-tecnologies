@@ -5,9 +5,9 @@ export type User = {
   name: string;
   email: string;
   password: string;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date | null | undefined;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at?: Date | null | undefined;
 
   tasks?: Task[];
 };

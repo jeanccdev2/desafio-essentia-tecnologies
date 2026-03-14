@@ -9,6 +9,8 @@ export const AuthGuard: CanActivateFn = () => {
 
   const isAuthenticated = store.isAuthenticated();
 
+  console.log('isAuthenticated', isAuthenticated);
+
   if (isAuthenticated) {
     return true;
   }

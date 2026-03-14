@@ -8,13 +8,13 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { AuthStore } from '../../../core/auth/auth.store';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.css',
 })
-export class LoginComponent {
+export class RegisterComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly authStore = inject(AuthStore);
@@ -24,9 +24,14 @@ export class LoginComponent {
   error: string | null = null;
 
   readonly form = this.fb.nonNullable.group({
+    name: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
+
+  get name() {
+    return this.form.controls.name;
+  }
 
   get email() {
     return this.form.controls.email;
@@ -46,16 +51,16 @@ export class LoginComponent {
     this.error = null;
 
     try {
-      const { email, password } = this.form.getRawValue();
+      const { name, email, password } = this.form.getRawValue();
 
-      const res = await firstValueFrom(this.authService.login(email, password));
+      const res = await firstValueFrom(this.authService.register(name, email, password));
 
       this.authStore.setSession(res.data!);
 
       await this.router.navigate(['/app']);
     } catch (err) {
-      console.error('login failed', err);
-      this.error = 'Credenciais inválidas ou erro no servidor.';
+      console.error('register failed', err);
+      this.error = 'Erro ao cadastrar. Tente novamente.';
     } finally {
       this.loading = false;
     }

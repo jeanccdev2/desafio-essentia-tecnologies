@@ -1,11 +1,28 @@
 <section class="auth-container">
   <div class="card">
     <header>
-      <h1>Entrar</h1>
-      <p class="muted">Acesse sua conta para continuar.</p>
+      <h1>Cadastro</h1>
+      <p class="muted">Crie sua conta para acessar a plataforma.</p>
     </header>
 
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label class="field">
+        <span>Nome</span>
+
+        <input type="text" formControlName="name" placeholder="Seu nome" />
+
+        @if (name.touched && name.invalid) {
+        <small>
+          @if (name.errors?.['required']) {
+          Nome é obrigatório.
+          }
+          @if (name.errors?.['minlength']) {
+          Mínimo de 3 caracteres.
+          }
+        </small>
+        }
+      </label>
+
       <label class="field">
         <span>Email</span>
 
@@ -46,10 +63,10 @@
 
       <div class="actions">
         <button type="submit" [disabled]="loading || form.invalid">
-          {{ loading ? 'Entrando...' : 'Entrar' }}
+          {{ loading ? 'Cadastrando...' : 'Cadastrar' }}
         </button>
 
-        <a class="secondary" routerLink="/cadastro">Cadastro</a>
+        <a class="secondary" routerLink="/login">Voltar para login</a>
       </div>
     </form>
   </div>

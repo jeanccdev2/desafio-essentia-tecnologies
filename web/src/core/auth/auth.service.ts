@@ -16,4 +16,11 @@ export class AuthService {
       { email, password },
     );
   }
+
+  register(name: string, email: string, password: string): Observable<ApiResponseInterface<AuthResponse>> {
+    return this.http.post<ApiResponseInterface<AuthResponse>>(
+      `${environment.apiUrl}/api/v1/auth/register`,
+      { name, email, password },
+    );
+  }
 }

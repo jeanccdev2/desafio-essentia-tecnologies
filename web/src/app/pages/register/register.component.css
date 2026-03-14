@@ -65,6 +65,13 @@ small {
   font-size: 0.85rem;
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
 button {
   margin-top: 0.5rem;
   padding: 0.7rem;
@@ -79,13 +86,6 @@ button {
 button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
 }
 
 .secondary {

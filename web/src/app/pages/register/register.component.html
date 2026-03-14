@@ -1,73 +1,69 @@
-<section class="auth-container">
-  <div class="card">
-    <header>
-      <h1>Cadastro</h1>
-      <p class="muted">Crie sua conta para acessar a plataforma.</p>
-    </header>
+<header>
+  <h1>Cadastro</h1>
+  <p class="muted">Crie sua conta para acessar a plataforma.</p>
+</header>
 
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <label class="field">
-        <span>Nome</span>
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <label class="field">
+    <span>Nome</span>
 
-        <input type="text" formControlName="name" placeholder="Seu nome" />
+    <input type="text" formControlName="name" placeholder="Seu nome" />
 
-        @if (name.touched && name.invalid) {
-        <small>
-          @if (name.errors?.['required']) {
-          Nome é obrigatório.
-          }
-          @if (name.errors?.['minlength']) {
-          Mínimo de 3 caracteres.
-          }
-        </small>
-        }
-      </label>
-
-      <label class="field">
-        <span>Email</span>
-
-        <input type="email" formControlName="email" placeholder="seu@email.com" />
-
-        @if (email.touched && email.invalid) {
-        <small>
-          @if (email.errors?.['required']) {
-          Email é obrigatório.
-          }
-          @if (email.errors?.['email']) {
-          Informe um email válido.
-          }
-        </small>
-        }
-      </label>
-
-      <label class="field">
-        <span>Senha</span>
-
-        <input type="password" formControlName="password" placeholder="••••••••" />
-
-        @if (password.touched && password.invalid) {
-        <small>
-          @if (password.errors?.['required']) {
-          Senha é obrigatória.
-          }
-          @if (password.errors?.['minlength']) {
-          Mínimo de 6 caracteres.
-          }
-        </small>
-        }
-      </label>
-
-      @if (error) {
-      <div class="error">{{ error }}</div>
+    @if (name.touched && name.invalid) {
+    <small>
+      @if (name.errors?.['required']) {
+      Nome é obrigatório.
       }
+      @if (name.errors?.['minlength']) {
+      Mínimo de 3 caracteres.
+      }
+    </small>
+    }
+  </label>
 
-      <div class="actions">
-        <button type="submit" [disabled]="loading || form.invalid">
-          {{ loading ? 'Cadastrando...' : 'Cadastrar' }}
-        </button>
+  <label class="field">
+    <span>Email</span>
 
-        <a class="secondary" routerLink="/login">Voltar para login</a>
-      </div>
-    </form>
+    <input type="email" formControlName="email" placeholder="seu@email.com" />
+
+    @if (email.touched && email.invalid) {
+    <small>
+      @if (email.errors?.['required']) {
+      Email é obrigatório.
+      }
+      @if (email.errors?.['email']) {
+      Informe um email válido.
+      }
+    </small>
+    }
+  </label>
+
+  <label class="field">
+    <span>Senha</span>
+
+    <input type="password" formControlName="password" placeholder="••••••••" />
+
+    @if (password.touched && password.invalid) {
+    <small>
+      @if (password.errors?.['required']) {
+      Senha é obrigatória.
+      }
+      @if (password.errors?.['minlength']) {
+      Mínimo de 6 caracteres.
+      }
+    </small>
+    }
+  </label>
+
+  @if (error) {
+  <div class="error">{{ error }}</div>
+  }
+
+  <div class="actions">
+    <button type="submit" [disabled]="loading || form.invalid">
+      {{ loading ? 'Cadastrando...' : 'Cadastrar' }}
+    </button>
+
+    <a class="secondary" routerLink="/login">Voltar para login</a>
   </div>
-</section>
+</form>

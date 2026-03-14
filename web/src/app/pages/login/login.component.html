@@ -1,56 +1,52 @@
-<section class="auth-container">
-  <div class="card">
-    <header>
-      <h1>Entrar</h1>
-      <p class="muted">Acesse sua conta para continuar.</p>
-    </header>
+<header>
+  <h1>Entrar</h1>
+  <p class="muted">Acesse sua conta para continuar.</p>
+</header>
 
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <label class="field">
-        <span>Email</span>
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <label class="field">
+    <span>Email</span>
 
-        <input type="email" formControlName="email" placeholder="seu@email.com" />
+    <input type="email" formControlName="email" placeholder="seu@email.com" />
 
-        @if (email.touched && email.invalid) {
-        <small>
-          @if (email.errors?.['required']) {
-          Email é obrigatório.
-          }
-          @if (email.errors?.['email']) {
-          Informe um email válido.
-          }
-        </small>
-        }
-      </label>
-
-      <label class="field">
-        <span>Senha</span>
-
-        <input type="password" formControlName="password" placeholder="••••••••" />
-
-        @if (password.touched && password.invalid) {
-        <small>
-          @if (password.errors?.['required']) {
-          Senha é obrigatória.
-          }
-          @if (password.errors?.['minlength']) {
-          Mínimo de 6 caracteres.
-          }
-        </small>
-        }
-      </label>
-
-      @if (error) {
-      <div class="error">{{ error }}</div>
+    @if (email.touched && email.invalid) {
+    <small>
+      @if (email.errors?.['required']) {
+      Email é obrigatório.
       }
+      @if (email.errors?.['email']) {
+      Informe um email válido.
+      }
+    </small>
+    }
+  </label>
 
-      <div class="actions">
-        <button type="submit" [disabled]="loading || form.invalid">
-          {{ loading ? 'Entrando...' : 'Entrar' }}
-        </button>
+  <label class="field">
+    <span>Senha</span>
 
-        <a class="secondary" routerLink="/cadastro">Cadastro</a>
-      </div>
-    </form>
+    <input type="password" formControlName="password" placeholder="••••••••" />
+
+    @if (password.touched && password.invalid) {
+    <small>
+      @if (password.errors?.['required']) {
+      Senha é obrigatória.
+      }
+      @if (password.errors?.['minlength']) {
+      Mínimo de 6 caracteres.
+      }
+    </small>
+    }
+  </label>
+
+  @if (error) {
+  <div class="error">{{ error }}</div>
+  }
+
+  <div class="actions">
+    <button type="submit" [disabled]="loading || form.invalid">
+      {{ loading ? 'Entrando...' : 'Entrar' }}
+    </button>
+
+    <a class="secondary" routerLink="/cadastro">Cadastro</a>
   </div>
-</section>
+</form>

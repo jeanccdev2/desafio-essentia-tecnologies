@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AuthGuard } from '../core/auth/auth.guard';
+import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 
 export const routes: Routes = [
   {
@@ -12,14 +13,20 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'login',
-    component: LoginComponent,
-    title: 'Login',
-  },
-  {
-    path: 'cadastro',
-    component: RegisterComponent,
-    title: 'Cadastro',
+    path: '',
+    component: AuthLayoutComponent,
+    children: [
+      {
+        path: 'login',
+        component: LoginComponent,
+        title: 'Login',
+      },
+      {
+        path: 'cadastro',
+        component: RegisterComponent,
+        title: 'Cadastro',
+      },
+    ],
   },
   {
     path: 'app',

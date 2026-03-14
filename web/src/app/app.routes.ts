@@ -5,6 +5,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AuthGuard } from '../core/auth/auth.guard';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
+import { TaskDetailComponent } from './pages/task-detail/task-detail.component';
 
 export const routes: Routes = [
   {
@@ -33,6 +34,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     component: HomeComponent,
     title: 'Dashboard',
+  },
+  {
+    path: 'app/tasks/:id',
+    canActivate: [AuthGuard],
+    component: TaskDetailComponent,
+    title: 'Detalhe da tarefa',
   },
   {
     path: '**',

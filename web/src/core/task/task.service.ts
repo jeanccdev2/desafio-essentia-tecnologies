@@ -31,6 +31,10 @@ export class TaskService {
       );
   }
 
+  getById(id: string): Observable<ApiResponseInterface<Task>> {
+    return this.http.get<ApiResponseInterface<Task>>(`${this.baseUrl}/${id}`);
+  }
+
   create(payload: TaskPayload): Observable<ApiResponseInterface<Task>> {
     return this.http.post<ApiResponseInterface<Task>>(this.baseUrl, payload);
   }

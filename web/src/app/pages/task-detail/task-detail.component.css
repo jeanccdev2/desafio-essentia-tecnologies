@@ -1,0 +1,134 @@
+.detail-container {
+  /* max-width: 800px; */
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 10px;
+  background: #0f172a;
+  color: #f8fafc;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+
+.back:hover {
+  background: #111827;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.28);
+}
+
+.back:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.22);
+}
+
+.task-id {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0.35rem 0 0;
+  font-size: 2rem;
+  color: #0f172a;
+}
+
+.muted {
+  margin: 0.25rem 0 0;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.badge-soft-amber {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-soft-blue {
+  background: #e0f2fe;
+  color: #0f172a;
+}
+
+.badge-soft-emerald {
+  background: #ecfdf3;
+  color: #065f46;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.dot-amber {
+  background: #f59e0b;
+}
+
+.dot-blue {
+  background: #0ea5e9;
+}
+
+.dot-emerald {
+  background: #10b981;
+}
+
+.detail-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.05);
+}
+
+.detail-card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  color: #0f172a;
+}
+
+.description {
+  margin: 0;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: #475569;
+}
+
+.state.error {
+  color: #b91c1c;
+}

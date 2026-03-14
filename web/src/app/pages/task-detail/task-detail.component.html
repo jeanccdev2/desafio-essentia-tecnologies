@@ -1,0 +1,25 @@
+<section class="detail-container" *ngIf="task() && !loading; else loadingOrError">
+  <header class="detail-header">
+    <div>
+      <p class="task-id">#{{ task()?.id }}</p>
+      <h1>{{ task()?.title }}</h1>
+      <p class="muted">Criado em {{ task()?.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+      <p class="muted" *ngIf="task()?.updatedAt">Atualizado em {{ task()?.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+    <span class="status" [ngClass]="statusCopy[task()!.status].badge">
+      <span class="dot" [ngClass]="statusCopy[task()!.status].dot"></span>
+      {{ statusCopy[task()!.status].label }}
+    </span>
+    <a class="back" routerLink="/app">← Voltar</a>
+  </header>
+
+  <article class="detail-card">
+    <h2>Descrição</h2>
+    <p class="description">{{ task()?.description || 'Sem descrição informada.' }}</p>
+  </article>
+</section>
+
+<ng-template #loadingOrError>
+  <div class="state" *ngIf="loading">Carregando...</div>
+  <div class="state error" *ngIf="!loading && error">{{ error }}</div>
+</ng-template>

@@ -1,9 +1,9 @@
 <article class="card">
   <div class="flex items-start justify-between gap-3">
-    <div>
+    <a class="flex-1" [routerLink]="['/app/tasks', task.id]">
       <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ task.id }}</p>
       <h2 class="mt-1 text-lg font-semibold text-slate-900">{{ task.title }}</h2>
-    </div>
+    </a>
     <span class="status-badge" [ngClass]="statusCopy[task.status].badge">
       <span class="status-dot" [ngClass]="statusCopy[task.status].dot"></span>
       {{ statusCopy[task.status].label }}

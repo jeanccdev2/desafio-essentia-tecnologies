@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 
-import { Task, TaskStatus } from '../../../core/task/task.model';
+import { Task, TaskPayload, TaskStatus } from '../../../core/task/task.model';
 import { TaskService } from '../../../core/task/task.service';
+import { TaskModalComponent } from '../../components/task-modal/task-modal.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TaskModalComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -17,7 +18,11 @@ export class HomeComponent implements OnInit {
 
   tasks = signal<Task[]>([]);
   loading = false;
+  creating = false;
   error: string | null = null;
+  isModalOpen = signal(false);
+  form: TaskPayload = { title: '', description: '', status: 'pending' };
+  readonly statuses: TaskStatus[] = ['pending', 'in_progress', 'completed'];
 
   readonly statusCopy: Record<TaskStatus, { label: string; badge: string; dot: string }> = {
     pending: { label: 'Pendente', badge: 'bg-amber-100 text-amber-800', dot: 'bg-amber-500' },
@@ -74,5 +79,37 @@ export class HomeComponent implements OnInit {
 
   trackById(_: number, task: Task) {
     return task.id;
+  }
+
+  openModal(): void {
+    this.isModalOpen.set(true);
+  }
+
+  closeModal(): void {
+    this.isModalOpen.set(false);
+    this.form = { title: '', description: '', status: 'pending' };
+  }
+
+  createTask(): void {
+    if (!this.form.title.trim()) {
+      return;
+    }
+
+    this.creating = true;
+    this.taskService
+      .create(this.form)
+      .pipe(finalize(() => (this.creating = false)))
+      .subscribe({
+        next: (response) => {
+          const newTask = response.data;
+          if (newTask) {
+            this.tasks.set([newTask, ...this.tasks()]);
+          }
+          this.closeModal();
+        },
+        error: (err) => {
+          console.error('Erro ao criar task', err);
+        },
+      });
   }
 }

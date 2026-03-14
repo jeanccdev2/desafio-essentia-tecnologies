@@ -1,0 +1,45 @@
+<div class="modal-backdrop" *ngIf="open" (click)="handleClose()"></div>
+
+<div class="modal" *ngIf="open">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>Nova tarefa</h3>
+      <button class="icon-button" type="button" (click)="handleClose()" aria-label="Fechar">×</button>
+    </div>
+
+    <form class="modal-body">
+      <label class="field">
+        <span>Título</span>
+        <input
++          type="text"
+          name="title"
+          [(ngModel)]="form.title"
+          required
+          placeholder="Ex: Criar apresentação"
+        />
+      </label>
+
+      <label class="field">
+        <span>Descrição</span>
+        <textarea
+          name="description"
+          rows="3"
+          [(ngModel)]="form.description"
+          placeholder="Detalhes rápidos"
+        ></textarea>
+      </label>
+
+      <label class="field">
+        <span>Status</span>
+        <select name="status" [(ngModel)]="form.status">
+          <option *ngFor="let status of statuses" [ngValue]="status">{{ statusCopy[status].label }}</option>
+        </select>
+      </label>
+
+      <div class="modal-footer">
+        <button type="button" class="ghost" (click)="handleClose()">Cancelar</button>
+        <button type="button" class="submit" (click)="handleSubmit()" [disabled]="creating">{{ creating ? 'Salvando...' : 'Salvar' }}</button>
+      </div>
+    </form>
+  </div>
+</div>

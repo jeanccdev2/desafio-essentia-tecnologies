@@ -27,6 +27,19 @@ class TaskController {
     res.apiResponseCreated("Tarefa criada com sucesso", task);
   }
 
+  async getById(req: Request<{ id: string }>, res: Response) {
+    const userId = req.user.id;
+    const taskId = req.params.id;
+
+    const task = await this.taskService.getById(userId, taskId);
+
+    if (!task) {
+      throw new NotFoundException("Tarefa não encontrada");
+    }
+
+    res.apiResponseOk("Tarefa encontrada com sucesso", task);
+  }
+
   async update(req: Request<{ id: string }, object, TaskUpdateDTO>, res: Response) {
     const payload = await validateDTO(TaskUpdateDTO, req.body);
     const userId = req.user.id;
